@@ -3,13 +3,16 @@ package Classe.Main;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import Classe.BO.*;
 import Classe.DTO.*;
 
 public class ViewAdministrador {	
-	static void dashboard(Administrador administrador) throws ParseException, SQLException { 
-		Scanner input = new Scanner (System.in);
+	private static Scanner input;
+	
+	static void dashboard(Administrador administrador) throws ParseException, SQLException { 		
+		input = new Scanner (System.in);
 		boolean ativo = true;
 		while(ativo) {
 			System.out.println("");
@@ -18,70 +21,42 @@ public class ViewAdministrador {
 			System.out.println("Opção 2 - Cadastrar aluno");
 			System.out.println("Opção 3 - Alterar endereço do aluno");   	                               
 	        System.out.println("Opção 4 - Alterar pais do aluno "); 
-	        System.out.println("Opção 5 - Sair");
+	        System.out.println("Opção 5 - Cadastrar professor");
+	        System.out.println("Opção 6 - Sair");
 	        System.out.println("Digite uma opção:");
 	        int opcao = input.nextInt();
 	        
 	        switch (opcao) {
 	        case 1: // modificações relacionado aos alunos
-	        	ativarFuncionalidade(opcao,administrador);
+	        	ativarFuncionalidade(opcao,administrador,input);
 	            break;
 	        case 2: // Modificações relacionado aos professores
-	        	ativarFuncionalidade(opcao,administrador);
+	        	ativarFuncionalidade(opcao,administrador,input);
 	            break;
 	        case 3:
-	        	ativarFuncionalidade(opcao,administrador);
+	        	ativarFuncionalidade(opcao,administrador,input);
 	            break;
 	        case 4:
-	        	ativarFuncionalidade(opcao,administrador);
+	        	ativarFuncionalidade(opcao,administrador,input);
 	        case 5:
+	        	ativarFuncionalidade(opcao,administrador,input);
+	        	break;
+	        case 6:
 	        	ativo = false;
+	        	break;
 	        }
 		}
 	}
 	
-	public static void ativarFuncionalidade(int opcao,Administrador administrador) throws ParseException, SQLException {
-    	SimpleDateFormat dataFormatacao = new SimpleDateFormat("yyyy-MM-dd");
-    	
-		Scanner input = new Scanner (System.in);
-		// Informações pessoal do Aluno
-		String cpfAluno = "";
-		String nomeAluno = "";
-		String sobrenomeAluno = "";
-		int idadeAluno = 0;
-		
-		// Informações de endereço do aluno 
-		String ruaAluno = "";
-		String cidadeAluno = "";
-		int numeroCasaAluno = 0;
-		String cepAluno = "";
-		
-		// Informações da mãe 
-		String cpfMae;
-		String nomeMae;
-		String sobreNomeMae;
-		int idadeMae;
-		String telefoneMae;
-		String dataMae;
-		java.util.Date dataNascimentoMae;
-		
-		//  Informações do pai
-		String cpfPai;
-		String nomePai; 
-		String sobreNomePai;
-		int idadePai;
-		String telefonePai;
-		String dataPai;
-		java.util.Date dataNascimentoPai;
-		String telefoneAluno;
-		
-		String bairroAluno;
-		
-		String emailPais;
-		String senhaPais;
-		
+	public static void ativarFuncionalidade(int opcao,Administrador administrador, Scanner input) throws ParseException, SQLException {
+	
+  	
+    	MatriculaBO matriculaBO = new MatriculaBO();
+    	MensagemBO mensagemBO = new MensagemBO();
     	AlunoBO alunoBO = new AlunoBO();
-    	MensagemBO mensagemBO = new MensagemBO ();
+    	EscolaBO escolaBO = new EscolaBO();
+    	SimpleDateFormat dataFormatacao = new SimpleDateFormat("yyyy-MM-dd");
+    	Date data = new Date();
     	
 		Aluno aluno = null;
 		Mae mae = null;
@@ -89,17 +64,63 @@ public class ViewAdministrador {
         Pais pais = null;
         Endereco endereco = null;
         
+        // VARIAVEIS UTILIZADAS
+		// Informações pessoal do Aluno
+		String cpfAluno = "";
+		String nomeAluno = "";
+		String sobrenomeAluno = "";
+		int idadeAluno = 0;
+		String telefoneAluno = "";
+		String bairroAluno = "";
+
+		Date dataNascimento;
+		// Informações de endereço do aluno 
+		String ruaAluno = "";
+		String cidadeAluno = "";
+		int numeroCasaAluno = 0;
+		String cepAluno = "";	
+		// Informações da mãe 
+		String cpfMae = "";
+		String nomeMae = "";
+		String sobreNomeMae = "";
+		int idadeMae = 0;
+		String telefoneMae = "";
+		String cargoMae = "";
+		String dataMae = "";
+		int anoMae = 0;
+		int mesMae = 0;
+		int diaMae = 0;
+		Date dataNascimentoMae;	
+		//  Informações do pai
+		String cpfPai = "";
+		String nomePai = ""; 
+		String sobreNomePai = "";
+		int idadePai = 0;
+		String telefonePai = "";
+		String cargoPai = "";
+		String dataPai = "";
+		int anoPai = 0;
+		int mesPai = 0;
+		int diaPai = 0;
+		Date dataNascimentoPai;
+		// Informações dos pais em cojunto
+		String emailPais;
+		String senhaPais;
+    	
+        
 		switch (opcao) {
 	        case 1:
-	        	System.out.println("Assunto:");
-	        	String assunto = input.nextLine();
-	        	System.out.println("Conteudo:");
-	        	String conteudo = input.nextLine();      	
+	        	input.nextLine();
+        		System.out.print("Assunto:");
+        		String assunto = input.nextLine();
+        		System.out.println("----------------------------");
+        		System.out.print("Conteudo:");
+        		String conteudo = input.nextLine();	
 	        	Mensagem mensagem = new Mensagem(assunto , conteudo);
 	        	
 	        	mensagem.addRemetente(administrador);
-	         	mensagem.addDestinatarios(alunoBO.listar());
-	         	System.out.println(mensagemBO.addMensagemRemetente(mensagem));
+	         	mensagem.addDestinatarios(matriculaBO.listarComAluno());
+	         	System.out.println(mensagemBO.addMensagemDestinatario(mensagem));
 	            break;
 	        case 2: // Cadastrar aluno novo no sistema
 	        	System.out.println("------------------------------");
@@ -123,44 +144,32 @@ public class ViewAdministrador {
 	        	System.out.println("Dia:");
 	        	int dia = input.nextInt();
 	        	String dataAluno = ano+"-"+mes+"-"+dia;
-	            java.util.Date dataNascimento = dataFormatacao.parse(dataAluno);
+	            dataNascimento = dataFormatacao.parse(dataAluno);
 	        	System.out.println("Email:");
 	        	String email = input.next();
 	        	System.out.println("Senha:");
 	        	String senha = input.next();
-	            java.util.Date dataMatricula = dataFormatacao.parse(dataAluno);
-	        	
-	            // Criação do aluno
-	            aluno = new Aluno(
-	            		cpfAluno, 
-	            		nomeAluno, 
-	            		sobrenomeAluno, 
-	            		idadeAluno, 
-	            		telefoneAluno,
-	            		email, 
-	            		senha, 
-	            		new java.sql.Date(dataNascimento.getTime()),
-	            		new Matricula(
-	            			0,
-	            			new java.sql.Date(dataNascimento.getTime())
-	            		)
-	            	); 
 	            
 	            System.out.println("------------------------------");
 	            System.out.println("      Endereço do aluno       ");
 	            System.out.println("------------------------------");
+	            
 	            System.out.println("Rua: ");
-	            String rua = input.next();
+	            ruaAluno = input.next();      
 	            System.out.println("Bairro:");
 	            bairroAluno  = input.next();
-	            System.out.println("Cidade:");
-	            String cidade = input.next();
-	            System.out.println("Número da casa:");
-	            int numerocasa = input.nextInt();
 	            System.out.println("CEP:");
-	            String cep = input.next();
-	            endereco = new Endereco(rua,bairroAluno,cidade,numerocasa,cep);
-	            aluno.addEndereco(endereco);
+	            cepAluno = input.next(); 
+	            System.out.println("Cidade:");
+	            cidadeAluno = input.next();
+	            
+	            endereco = new Endereco(
+	            		ruaAluno,
+	            		bairroAluno,
+	            		cidadeAluno,
+	            		numeroCasaAluno,
+	            		cepAluno
+	            	);
 	            
 	            System.out.println("------------------------------");
 	            System.out.println("        Pais do aluno         ");
@@ -175,43 +184,75 @@ public class ViewAdministrador {
 	        	idadeMae = input.nextInt();
 	        	System.out.println("Telefone da mãe:");
 	        	telefoneMae = input.next();
+	        	System.out.println("Cargo da mae: ");
+	        	cargoMae = input.next();
 	        	System.out.println("Data de nascimento da mãe:");
-	        	dataMae = input.next();
+	        	System.out.println("Ano: ");
+	        	anoMae = input.nextInt();
+	        	System.out.println("Mes: ");
+	        	mesMae = input.nextInt();
+	        	System.out.println("Dia: ");
+	        	diaMae = input.nextInt();
+	        	dataMae = anoMae+"-"+mesMae+"-"+diaMae;
 	            dataNascimentoMae = dataFormatacao.parse(dataMae);
-	            
+	        	
 	            System.out.println("----------------------------------------------------");
 	            
 	            System.out.println("CPF do pai:");
-	            cpfPai = input.next();
+	            cpfPai = input.next();   
 	            System.out.println("Nome do pai:");
-	            nomePai = input.next();
+	            nomePai = input.next();         
 	            System.out.println("Sobrenome do pai:");
 	            sobreNomePai = input.next();
 	            System.out.println("Idade do pai:");
 	            idadePai = input.nextInt();
 	            System.out.println("Telefone do pai:");
 	        	telefonePai = input.next();
+	        	System.out.println("Cargo do pai:");
+	        	cargoPai = input.next();
 	            System.out.println("Data de nascimento do pai:");
-	            dataPai = input.next();
+	            System.out.println("Ano: ");
+	        	anoPai = input.nextInt();
+	        	System.out.println("Mes: ");
+	        	mesPai = input.nextInt();
+	        	System.out.println("Dia: ");    
+	        	diaPai = input.nextInt();
+	            dataPai = anoPai+"-"+mesPai+"-"+diaPai;
 	            dataNascimentoPai = dataFormatacao.parse(dataPai);
-	            
+	        	
 	            System.out.println("Email dos pais:");
 	            emailPais = input.next();
-	            System.out.println("Uma senha de acesso:");
+	            System.out.println("senha: ");
 	            senhaPais = input.next();
 	            
-	            mae = new Mae(cpfMae,nomeMae,sobreNomeMae,idadeMae,telefoneMae, new java.sql.Date(dataNascimentoMae.getTime()));
-	            pai = new Pai(cpfPai,nomePai,sobreNomePai,idadePai,telefonePai, new java.sql.Date(dataNascimentoPai.getTime()));
-	            pais = new Pais(0,emailPais,senhaPais,mae,pai);
-	        	aluno.addPais(pais);
-	        	System.out.println(alunoBO.cadastrar(aluno)); 
-	        	
+	            mae = new Mae(cpfMae,nomeMae,sobreNomeMae,idadeMae,telefoneMae,new java.sql.Date(dataNascimentoMae.getTime()),cargoMae);
+	            pai = new Pai(cpfPai,nomePai,sobreNomePai,idadePai,telefonePai,new java.sql.Date(dataNascimentoPai.getTime()),cargoPai);
+	            pais = new Pais(emailPais,senhaPais,mae,pai);
+
+	            Escola escola = escolaBO.visualizar(new Escola());
+	            
+	            aluno = new Aluno(
+	            		cpfAluno,
+	            		nomeAluno,
+	            		sobrenomeAluno, 
+	            		idadeAluno,
+	            		email,
+	            		senha,
+	            		telefoneAluno,
+	            		new java.sql.Date(dataNascimento.getTime()),
+	            		pais,
+	            		endereco,
+	            		escola
+	            	); 
+	            
+	        	Matricula matricula = new Matricula(new java.sql.Date(data.getTime()),new java.sql.Time(data.getTime()),  aluno);
+	        	System.out.println(matriculaBO.cadastrar(matricula));
 	            break;
-	        case 3:  // Alteração do endereço do aluno 
-	    		System.out.println("CPF do aluno: "); // CPF valido: 1234567896945
+	        case 3:  
+	        	System.out.println("CPF do aluno: "); 
 	    		cpfAluno = input.next();
 
-	    		aluno = new Aluno(new Matricula(0),cpfAluno);
+	    		aluno = new Aluno(cpfAluno);
 	    		
 	        	System.out.println("Digite as novas informações");
 	        	System.out.println("Rua:");
@@ -224,58 +265,76 @@ public class ViewAdministrador {
 	        	numeroCasaAluno = input.nextInt();
 	        	System.out.println("CEP:");
 	        	cepAluno = input.next();
-	        	aluno.addEndereco(new Endereco(ruaAluno, bairroAluno, cidadeAluno, numeroCasaAluno, cepAluno));
-	        	aluno.addPais(new Pais(0,new Mae(),new Pai()));
+	        	aluno.setEndereco(new Endereco(ruaAluno, bairroAluno, cidadeAluno, numeroCasaAluno, cepAluno));
+	        	aluno.setPais(new Pais(new Mae(), new Pai()));
 	        	System.out.println(alunoBO.alterarEndereco(aluno));
-	        	
 	            break;
-	        case 4:   // Alteração das informações dos pais
-	        	System.out.println("CPF do aluno: "); // CPF valido: 1234567896945
+	        case 4:   
+	        	
+	        	System.out.println("CPF do aluno: "); 
 	    		cpfAluno = input.next();
 
-	    		aluno = new Aluno(new Matricula(0),cpfAluno);
+	    		aluno = new Aluno(cpfAluno);
 	    		
-	        	System.out.println("Digite as novas informações!");
-	        	System.out.println("CPF da mãe:");
-	        	cpfMae = input.next();
+	        	System.out.println("------------------------------");
+	            System.out.println("        Pais do aluno         ");
+	            System.out.println("------------------------------");
 	        	System.out.println("Nome da mãe:");
 	        	nomeMae = input.next();
 	        	System.out.println("Sobrenome da mãe:");
 	        	sobreNomeMae = input.next();
+	        	System.out.println("CPF do pai:");
+	            cpfMae = input.next(); 
 	        	System.out.println("Idade da mãe:");
 	        	idadeMae = input.nextInt();
 	        	System.out.println("Telefone da mãe:");
 	        	telefoneMae = input.next();
+	        	System.out.println("Cargo da mae: ");
+	        	cargoMae = input.next();
 	        	System.out.println("Data de nascimento da mãe:");
-	        	dataMae = input.next();
+	        	System.out.println("Ano: ");
+	        	anoMae = input.nextInt();
+	        	System.out.println("Mes: ");
+	        	mesMae = input.nextInt();
+	        	System.out.println("Dia: ");
+	        	diaMae = input.nextInt();
+	        	dataMae = anoMae+"-"+mesMae+"-"+diaMae;
 	            dataNascimentoMae = dataFormatacao.parse(dataMae);
-	            
+	        	
 	            System.out.println("----------------------------------------------------");
-	            
-	            System.out.println("CPF do pai:");
-	            cpfPai = input.next();
+	             
 	            System.out.println("Nome do pai:");
-	            nomePai = input.next();
+	            nomePai = input.next();         
 	            System.out.println("Sobrenome do pai:");
 	            sobreNomePai = input.next();
+	            System.out.println("CPF do pai:");
+	            cpfPai = input.next(); 
 	            System.out.println("Idade do pai:");
 	            idadePai = input.nextInt();
 	            System.out.println("Telefone do pai:");
 	        	telefonePai = input.next();
+	        	System.out.println("Cargo do pai:");
+	        	cargoPai = input.next();
 	            System.out.println("Data de nascimento do pai:");
-	            dataPai = input.next();
-	            dataNascimentoPai = dataFormatacao.parse(dataPai);
+	            System.out.println("Ano: ");
+	        	anoPai = input.nextInt();
+	        	System.out.println("Mes: ");
+	        	mesPai = input.nextInt();
+	        	System.out.println("Dia: ");    
+	        	diaPai = input.nextInt();
+	            dataPai = anoPai+"-"+mesPai+"-"+diaPai;
+	            dataNascimentoPai = dataFormatacao.parse(dataPai); 
 	            
-	            mae = new Mae(cpfMae,nomeMae,sobreNomeMae,idadeMae, telefoneMae ,new java.sql.Date(dataNascimentoMae.getTime()));
-	            pai = new Pai(cpfPai,nomePai,sobreNomePai,idadePai, telefonePai ,new java.sql.Date(dataNascimentoPai.getTime()));
-	            pais = new Pais(0,mae,pai);
-	            
-	        	aluno.addEndereco(new Endereco());
-	        	aluno.addPais(pais);
-	        	System.out.println(alunoBO.alterarPais(aluno));
+	            mae = new Mae(cpfMae,nomeMae,sobreNomeMae,idadeMae,telefoneMae,new java.sql.Date(dataNascimentoMae.getTime()),cargoMae);
+	            pai = new Pai(cpfPai,nomePai,sobreNomePai,idadePai,telefonePai,new java.sql.Date(dataNascimentoPai.getTime()),cargoPai);
+	            pais = new Pais(mae,pai);
+	        	aluno.setPais(pais);
+	        	aluno.setEndereco(new Endereco());
+	        	System.out.println(alunoBO.alterarPais(aluno));   
 	        	break;
 	        default:
 	            break;
 		}	
 	}
+	
 }

@@ -6,48 +6,57 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import Classe.Conexao.Conexao;
-import Classe.DTO.Administrador;
+import Classe.DTO.Professor;
 
 public class ProfessorDAO {
-	public static boolean verificar(Administrador administrador) {
-	    try {
+	private static final String tabela = "tb_funcionarios";
+	
+	public static boolean verificar (Professor professor) {
+		try {
 		    Connection conn = Conexao.conectaBanco();
-	        String querySelect = "SELECT * FROM tb_funcionarios WHERE (func_email = ? AND func_senha = ?) OR func_codigo = ?";
+	        String querySelect = "SELECT * FROM "+tabela+" WHERE (func_email = ? AND func_senha = ? AND func_cargo ilike 'Professor') OR func_codigo = ? OR func_cpf = ?";
 	        PreparedStatement stmt = conn.prepareStatement(querySelect);
-	        stmt.setString(1, administrador.getEmail());
-	        stmt.setString(2, administrador.getSenha());
-	        stmt.setInt(3, administrador.getCodigo());
+	        stmt.setString(1, professor.getEmail());
+	        stmt.setString(2, professor.getSenha());
+	        stmt.setInt(3, professor.getCodigo());
+	        stmt.setString(4, professor.getCpf());
 	        ResultSet rs = stmt.executeQuery();
-	        return rs.next();
+	        if (rs.next()) return true;
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
+	    	e.printStackTrace();
 	    } 
-	    return false;
+		
+		return false;
 	}
 	
 	
-	public static Administrador visualizar(Administrador administrador) {
-	    try {
+	public static Professor visualizar(Professor professor) {
+		try {
 		    Connection conn = Conexao.conectaBanco();
-	        String querySelect = "SELECT * FROM tb_funcionarios WHERE (func_email = ? AND func_senha = ?) OR func_codigo = ?";
+	        String querySelect = "SELECT * FROM "+tabela+" WHERE (func_email = ? AND func_senha = ? AND func_cargo ilike  'Professor') OR func_codigo = ? OR func_cpf = ?";
 	        PreparedStatement stmt = conn.prepareStatement(querySelect);
-	        stmt.setString(1, administrador.getEmail());
-	        stmt.setString(2, administrador.getSenha());
-	        stmt.setInt(3, administrador.getCodigo());
+	        stmt.setString(1, professor.getEmail());
+	        stmt.setString(2, professor.getSenha());
+	        stmt.setInt(3, professor.getCodigo());
+	        stmt.setString(4, professor.getCpf());
 	        ResultSet rs = stmt.executeQuery();
 	        if (rs.next()) {
-	            administrador.setCodigo(rs.getInt("func_codigo"));
-	            administrador.setCpf(rs.getString("func_cpf"));
-	            administrador.setNome(rs.getString("func_nome"));
-	            administrador.setSobrenome(rs.getString("func_sobrenome"));
-	            administrador.setIdade(rs.getInt("func_idade"));
-	            administrador.setDataNascimento(rs.getDate("func_datanascimento"));
-	            administrador.setEmail(rs.getString("func_email"));
-	            administrador.setSenha(rs.getString("func_senha"));
-	        } 
+	        	professor.setCodigo(rs.getInt("func_codigo"));
+	        	professor.setCpf(rs.getString("func_cpf"));
+	        	professor.setNome(rs.getString("func_nome"));
+	        	professor.setCargo(rs.getString("func_cargo"));
+	        	professor.setSobrenome(rs.getString("func_sobrenome"));
+	        	professor.setIdade(rs.getInt("func_idade"));
+	        	professor.setTelefone(rs.getString("func_telefone"));
+	        	professor.setDataNascimento(rs.getDate("func_datanascimento"));
+	        	professor.setEmail(rs.getString("func_email"));
+	        	professor.setSenha(rs.getString("func_senha"));
+	        };
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
-	    }
-	    return administrador;
+	    	e.printStackTrace();
+	    } 
+		
+		return professor;
 	}
+	
 }

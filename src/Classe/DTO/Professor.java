@@ -3,19 +3,23 @@ package Classe.DTO;
 import java.sql.Date;
 
 public class Professor extends Pessoa{
-	private static String cargo = "Professor";
+	private static final String cargo = "Professor";
+
+	public Professor() {}
 	
-	public Professor(String cpf) {
-		super(cpf);
+	public Professor(int codigo) {
+		super(codigo);
 	}
 	
-	public Professor(String cpf, String nome, String sobrenome, int idade, Date dataNascimento) {
-		super(cpf, nome, sobrenome, idade, dataNascimento);
+	public Professor(String email, String senha) {
+		super(email, senha);
 	}
 	
-	public Professor(int codigo, String cpf, String nome, String sobrenome, int idade, String email,String senha, String telefone, Date dataNascimento) {
-		super(cpf, nome, sobrenome, idade, email,senha,telefone, cargo, dataNascimento);
-		setCodigo(codigo);
+	public Professor(int codigo, String cpf, String nome, String sobrenome, int idade, String email, String senha,String telefone, Date dataNascimento) {
+		super(codigo, cpf, nome, sobrenome, idade, email, senha, telefone, dataNascimento, cargo);
 	}
 	
+	public Professor(String cpf, String nome, String sobrenome, int idade, String email, String senha,String telefone, Date dataNascimento) {
+		super(cpf, nome, sobrenome, idade, email, senha, telefone, dataNascimento, cargo);
+	}
 }

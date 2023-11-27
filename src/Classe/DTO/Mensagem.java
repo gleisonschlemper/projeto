@@ -5,13 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 public class Mensagem {
-    private int codigo; // Vai ser utilizado quando pegar A mensagem de volta
-    private Pessoa remetente; // Professor ou Administrador
-    private List <Aluno> destinatarios; // Pais e Alunos
+    private int codigo; 
+    private Pessoa remetente;
+    private List <Matricula> destinatarios;
     private String assunto = "";
     private String conteudo = "";
     private Date dataEnvio;
     private Time horaEnvio;
+    
+    public Mensagem() {}
     
     public Mensagem(String assunto, String conteudo) {
        	setAssunto(assunto);
@@ -81,12 +83,11 @@ public class Mensagem {
         this.remetente = remetente;
     }
 
-    public List <Aluno> getDestinatarios() {
+    public List <Matricula> getDestinatarios() {
         return this.destinatarios;
     }
 
-    public void addDestinatarios(List <Aluno> destinatarios) {
+    public void addDestinatarios(List <Matricula> destinatarios) {
         this.destinatarios = destinatarios;
     }
-
 }

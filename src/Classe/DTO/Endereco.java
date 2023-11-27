@@ -8,10 +8,7 @@ public class Endereco {
 	private int casanumero = 0;
 	private String cep = "";
 	
-	
-	public Endereco() {
-		
-	}
+	public Endereco() {}
 	
 	public Endereco (int codigo) {
 		setCodigo(codigo);

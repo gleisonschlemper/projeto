@@ -1,28 +1,28 @@
 package Classe.BO;
 
 import java.sql.SQLException;
+import java.util.List;
 import Classe.DAO.MensagemDAO;
 import Classe.DTO.*;
 
 public class MensagemBO {
-	public boolean addMensagemDestinatario(Mensagem mensagem) {	
-		return MensagemDAO.addDestinatario(mensagem);
+	public boolean addMensagemRemetente(Mensagem mensagem) {	
+		return MensagemDAO.addRemetente(mensagem);
 	}
 
 	public Mensagem visualizarMensagemDestinatario(Mensagem mensagem) throws SQLException {
-		return MensagemDAO.visualizarMensagemDestinatario(mensagem);
+		return MensagemDAO.visualizarMensagemRemetente(mensagem);
 	}
 	
-	public boolean addMensagenRemetente(Mensagem mensagem) throws SQLException {
-		return MensagemDAO.addRemetente(mensagem);
+	public boolean addMensagensDestinatarios(Mensagem mensagem) throws SQLException {
+		return MensagemDAO.addDestinatario(mensagem);
 	}
 	
-	public String addMensagemRemetente(Mensagem mensagem) throws SQLException {
-		addMensagemDestinatario(mensagem);
-		// Pega a mensagem do destinatario cadastrado no banco 
-		Mensagem mensagemComCodigo = visualizarMensagemDestinatario(mensagem);	
+	public String addMensagemDestinatario(Mensagem mensagem) throws SQLException {
+		addMensagemRemetente(mensagem);
+		Mensagem mensagemComCodigo = visualizarMensagemDestinatario(mensagem);	// Pega a mensagem do remetente cadastrado no banco 
 		enviarEmail(mensagemComCodigo);
-		addMensagenRemetente(mensagemComCodigo);
+		addMensagensDestinatarios(mensagemComCodigo);
 		return "Mensagem enviado com sucesso!";
 	}
 	
@@ -30,5 +30,9 @@ public class MensagemBO {
 		 return MensagemDAO.enviarEmail(mensagem);
 	}
 	
+	public List <Mensagem> consultarMensagensPorDestinatario(Mensagem mensagem) throws SQLException {
+		
+		return MensagemDAO.consultarMensagensPorDestinatario(mensagem);
+	}
 
 }

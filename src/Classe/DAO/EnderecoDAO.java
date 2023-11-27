@@ -9,10 +9,12 @@ import Classe.Conexao.Conexao;
 import Classe.DTO.Endereco;
 
 public class EnderecoDAO {
+	private static final String tabela = "tb_enderecos";
+	
 	public static boolean verificar(Endereco endereco) {
 	    try {
 	    	Connection conn = Conexao.conectaBanco();
-	        String querySelect = "SELECT * FROM tb_enderecos WHERE (end_rua = ? AND end_bairro = ? AND end_cidade = ? AND end_casanumero = ? AND end_cep = ?) OR end_codigo = ?";
+	        String querySelect = "SELECT * FROM "+tabela+" WHERE (end_rua = ? AND end_bairro = ? AND end_cidade = ? AND end_casanumero = ? AND end_cep = ?) OR end_codigo = ?";
 	        PreparedStatement stmt = conn.prepareStatement(querySelect);
 	        stmt.setString(1, endereco.getRua());
 	        stmt.setString(2, endereco.getBairro());
@@ -28,16 +30,15 @@ public class EnderecoDAO {
 	        	return true;
 	        }
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
+	    	//e.printStackTrace();
 	    }
 	    return false;
 	}
 	
-
 	public static boolean cadastrar(Endereco endereco) {
 	     try {
 	 	     Connection conn = Conexao.conectaBanco();
-	         String queryInsertEndereco = "INSERT INTO tb_enderecos (end_rua, end_bairro, end_cidade, end_casanumero, end_cep) VALUES (?, ?, ?, ?, ?)";
+	         String queryInsertEndereco = "INSERT INTO "+tabela+" (end_rua, end_bairro, end_cidade, end_casanumero, end_cep) VALUES (?, ?, ?, ?, ?)";
 	         PreparedStatement stmt = conn.prepareStatement(queryInsertEndereco);
 	         stmt.setString(1, endereco.getRua());
 	         stmt.setString(2, endereco.getBairro());
@@ -45,22 +46,24 @@ public class EnderecoDAO {
 	         stmt.setInt(4, endereco.getCasanumero());
 	         stmt.setString(5, endereco.getCep());
 	         ResultSet rs = stmt.executeQuery();
-	         conn.close();
-	         stmt.close();
-	         rs.close();
+		     if(rs.next()) {
+		        conn.close();
+		        stmt.close();
+		        rs.close();
+		        return true;
+		     }
 	       } 
 	     catch (SQLException e) {
-	         System.out.println(e.getMessage());
+	    	 //e.printStackTrace();
 	     }
 	     
-	    return true;
+	    return false;
 	}
-
 
 	public static Endereco visualizar(Endereco endereco) {
 		try {
-			Connection conn = Conexao.conectaBanco();
-			String querySelect = "SELECT * FROM tb_enderecos WHERE (end_rua = ? AND end_bairro = ? AND end_cidade = ? AND end_casanumero = ? AND end_cep = ?) OR end_codigo = ?";
+		     Connection conn = Conexao.conectaBanco();
+			 String querySelect = "SELECT * FROM tb_enderecos WHERE (end_rua = ? AND end_bairro = ? AND end_cidade = ? AND end_casanumero = ? AND end_cep = ?) OR end_codigo = ?";
 			 PreparedStatement stmt = conn.prepareStatement(querySelect);
 			 stmt.setString(1, endereco.getRua());
 			 stmt.setString(2, endereco.getBairro());
@@ -84,7 +87,7 @@ public class EnderecoDAO {
 			 return endereco;
 			} 
 		catch (SQLException e) {
-			 System.out.println(e.getMessage());
+			// System.out.println(e.getMessage());
 		}
 		
 		return endereco;
@@ -102,23 +105,13 @@ public class EnderecoDAO {
 	         stmt.setString(5, endereco.getCep());
 	         stmt.setInt(6, endereco.getCodigo() );
 	         ResultSet rs = stmt.executeQuery();
-	         if(rs.next()) {
-	        	 conn.close();
-				 stmt.close();
-				 rs.close();
-				 return false;
-	         }
+	         conn.close();
+	         stmt.close();
+	         rs.close(); 
 		}
 		catch (SQLException e) {
-	        System.out.println(e.getMessage());
+			//e.printStackTrace();
 	    }
-		return false;
+        return true;
 	}
-	
-	// FAZER
-	public static boolean deletar(Endereco endereco) {
-		return false;
-	}
-	
-	
 }

@@ -7,6 +7,12 @@ public class EnderecoBO {
 	public boolean exite(Endereco endereco) {
 		return EnderecoDAO.verificar(endereco);
 	}
+
+	public boolean cadastrar(Endereco endereco) {
+		if(exite(endereco)) return false;
+		
+		return EnderecoDAO.cadastrar(endereco);
+	}
 	
 	public Endereco visualizar(Endereco endereco) {
 		if(exite(endereco)) return EnderecoDAO.visualizar(endereco);
@@ -14,14 +20,7 @@ public class EnderecoBO {
 		return endereco;
 	}
 	
-	public boolean cadastrar(Endereco endereco) {
-		if(exite(endereco)) return false;
-		
-		return EnderecoDAO.cadastrar(endereco);
-	}
-
 	public boolean alterar(Endereco endereco) {
 		return EnderecoDAO.alterar(endereco);
 	}
-	
 }

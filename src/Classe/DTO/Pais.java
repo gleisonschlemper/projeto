@@ -7,10 +7,20 @@ public class Pais {
 	private Pai pai;
 	private Mae mae;
 	
-	public Pais(int codigo, Mae mae,Pai pai) {
+	public Pais(Mae mae,Pai pai) {
+		setMae(mae);
+		setPai(pai);
+	}
+	
+	public Pais(int codigo, Mae mae, Pai pai) {
 		setCodigo(codigo);
 		setMae(mae);
 		setPai(pai);
+	}
+	
+	public Pais(String email, String senha) {
+		setEmail(email);
+		setSenha(senha);
 	}
 	
 	public Pais(String email,String senha,Mae mae,Pai pai){
@@ -27,28 +37,7 @@ public class Pais {
 		setMae(mae);
 		setPai(pai);
 	}
-	
-	public Pais(Mae mae,Pai pai) {
-		setMae(mae);
-		setPai(pai);
-	}
 
-	public Pai getPai() {
-		return pai;
-	}
-	
-	public void setPai(Pai pai) {
-		this.pai = pai;
-	}
-	
-	public Mae getMae() {
-		return mae;
-	}
-	
-	public void setMae(Mae mae) {
-		this.mae = mae;
-	}
-	
 	public int getCodigo() {
 		return codigo;
 	}
@@ -60,21 +49,33 @@ public class Pais {
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getSenha() {
 		return senha;
 	}
-	
+
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 
-	
-	
-	
+	public Pai getPai() {
+		return pai;
+	}
+
+	public void setPai(Pai pai) {
+		this.pai = pai;
+	}
+
+	public Mae getMae() {
+		return mae;
+	}
+
+	public void setMae(Mae mae) {
+		this.mae = mae;
+	}
 	
 }

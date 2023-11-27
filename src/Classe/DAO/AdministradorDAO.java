@@ -9,18 +9,21 @@ import Classe.Conexao.Conexao;
 import Classe.DTO.Administrador;
 
 public class AdministradorDAO {
+	private static final String tabela = "tb_funcionarios";
+	
 	public static boolean verificar(Administrador administrador) {
 	    try {
 		    Connection conn = Conexao.conectaBanco();
-	        String querySelect = "SELECT * FROM tb_funcionarios WHERE (func_email = ? AND func_senha = ?) OR func_codigo = ?";
+	        String querySelect = "SELECT * FROM "+tabela+" WHERE (func_email = ? AND func_senha = ? AND func_cargo ilike 'Administrador') OR func_codigo = ? OR func_cpf = ?";
 	        PreparedStatement stmt = conn.prepareStatement(querySelect);
 	        stmt.setString(1, administrador.getEmail());
 	        stmt.setString(2, administrador.getSenha());
 	        stmt.setInt(3, administrador.getCodigo());
+	        stmt.setString(4, administrador.getCpf());
 	        ResultSet rs = stmt.executeQuery();
 	        if (rs.next()) return true;
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
+	    	e.printStackTrace();
 	    } 
 	    return false;
 	}
@@ -29,18 +32,21 @@ public class AdministradorDAO {
 	public static Administrador visualizar(Administrador administrador) {
 	    try {
 		    Connection conn = Conexao.conectaBanco();
-	        String querySelect = "SELECT * FROM tb_funcionarios WHERE (func_email = ? AND func_senha = ?) OR func_codigo = ?";
+	        String querySelect = "SELECT * FROM "+tabela+" WHERE (func_email = ? AND func_senha = ? AND func_cargo ilike 'Administrador') OR func_codigo = ? OR func_cpf = ?  ";
 	        PreparedStatement stmt = conn.prepareStatement(querySelect);
 	        stmt.setString(1, administrador.getEmail());
 	        stmt.setString(2, administrador.getSenha());
 	        stmt.setInt(3, administrador.getCodigo());
+	        stmt.setString(4, administrador.getCpf());
 	        ResultSet rs = stmt.executeQuery();
 	        if (rs.next()) {
 	            administrador.setCodigo(rs.getInt("func_codigo"));
 	            administrador.setCpf(rs.getString("func_cpf"));
 	            administrador.setNome(rs.getString("func_nome"));
+	            administrador.setCargo(rs.getString("func_cargo"));
 	            administrador.setSobrenome(rs.getString("func_sobrenome"));
 	            administrador.setIdade(rs.getInt("func_idade"));
+	            administrador.setTelefone(rs.getString("func_telefone"));
 	            administrador.setDataNascimento(rs.getDate("func_datanascimento"));
 	            administrador.setEmail(rs.getString("func_email"));
 	            administrador.setSenha(rs.getString("func_senha"));
@@ -49,11 +55,11 @@ public class AdministradorDAO {
 	        stmt.close();
 	        rs.close();
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
+	    	e.printStackTrace();
 	    }
 	    return administrador;
 	}
+	
+	
 
-	
-	
 }

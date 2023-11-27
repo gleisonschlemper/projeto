@@ -15,4 +15,5 @@ public class AdministradorBO {
 		
 		return administrador;
 	}
+	
 }

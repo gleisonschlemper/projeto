@@ -22,11 +22,7 @@ public class PaisBO {
 	}
 	
 	public boolean alterar(Pais pais) {
-		return PaisDAO.alterar(pais);
-	}
-
-	// FAZER
-	public boolean deleter(Pais pais) {
+		if(existe(pais)) return PaisDAO.alterar(pais);
 		return false;
 	}
 }

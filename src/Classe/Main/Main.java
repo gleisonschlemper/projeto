@@ -1,22 +1,25 @@
 package Classe.Main;
 
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Scanner;
 
-import Classe.BO.AdministradorBO;
-import Classe.BO.AlunoBO;
-import Classe.DAO.AdministradorDAO;
+import Classe.BO.*;
 import Classe.DTO.*;
 
 public class Main {	
-    public static void main(String[] args) throws ClassNotFoundException, ParseException, SQLException {
-    	Scanner input = new Scanner (System.in);	
-  
+    private static Scanner input;
+
+
+	public static void main(String[] args) throws ClassNotFoundException, ParseException, SQLException, InterruptedException, IOException {
+		//GerarHTML.bodyMatriculados(MatriculaDAO.listarComAluno());
+		
+		input = new Scanner (System.in);	  
     	boolean sistema = true; 	
-        while (sistema) {            
-	        System.out.println("##-- Sistema de notificacoes e avisos Escolar --##\n");
+        while (sistema) {   
+	        System.out.println("##--  Sistema de notificacoes e avisos Escolar --##\n");
 	        System.out.println("Faca seu Login!                                   \n");
 	        System.out.println("Opção 1 - Administrador	                            ");
 	        System.out.println("Opção 2 - Professor	                                ");
@@ -35,35 +38,54 @@ public class Main {
 		            email = input.next();
 		            System.out.println("Senha:");
 		            senha = input.next();
-		            Administrador administrador = new Administrador(0,email,senha);    
+		            
+		            Administrador administrador = new Administrador(email,senha);  
+		            
 		            if(administradorBO.existe(administrador))
-		            	 ViewAdministrador.dashboard(administradorBO.visualizar(administrador)); 	   
+		            	ViewAdministrador.dashboard(administradorBO.visualizar(administrador));
+		            else
+		            	System.out.println("E-mail ou senha inválido");
 		            break;
 		        case 2: // FAZER Login do Professor
-		        
+		        	ProfessorBO professorBO = new ProfessorBO();
+		        	
+		        	 System.out.println("Email: ");
+		        	 email = input.next();
+		        	 System.out.println("Senha: ");
+		        	 senha = input.next();
+		        	 Professor professor = new Professor(email,senha);
+		        	 
+		        	 if(professorBO.existe(professor)) 
+			        		ViewProfessor.dashboard(professorBO.visualizar(professor));
+			        	else 
+			        		System.out.println("E-mail ou senha inválido");
 		            break;
 		        case 3: // FAZER Login Pais e Alunos
-		        	 AlunoBO alunoBO = new AlunoBO();
-		        	 
-		        	 System.out.println("Email:");
-			         email = input.next();
-			         System.out.println("Senha:");
-			         senha = input.next();
-			       
-			         Aluno aluno = new Aluno(new Matricula(0),email,senha);    
-			         aluno.addEndereco(new Endereco());
-			         aluno.addPais(new Pais(0,new Mae(),new Pai()));
-			         
-			         if(alunoBO.existe(aluno))
-			        	 ViewPaisEaluno.dashboard(alunoBO.visualizarCompleto(aluno));
+		        	AlunoBO alunoBO = new AlunoBO();
+		        	
+		        	System.out.println("Email: ");
+		            email = input.next();
+		            System.out.println("Senha: ");
+		            senha = input.next();
+		        	
+		            Aluno aluno = new Aluno(email,senha);
+			    	aluno.setPais(new Pais(new Mae(), new Pai()));
+			    	aluno.setEndereco(new Endereco());
+			    	
+		        	if(alunoBO.existe(aluno)) 
+		        		ViewPaisEaluno.dashboard(alunoBO.visualizar(aluno));
+		        	else 
+		        		System.out.println("E-mail ou senha inválido");
 		            break;
 		        case 4:
-		        	System.out.println("Ate logo!");
 		        	sistema = false;
+		        	break;
 		        default:
-		            System.out.print("Opção Inválida!");
+		        	System.out.print("Opção Inválida!");
 		            break;
 	        }
         }   
+        
+    	System.out.println("Ate logo!");
     }
 }
