@@ -27,7 +27,7 @@ public class AlunoDAO  {
             }
         } 
         catch (SQLException e) {
-        	System.out.println(e.getMessage()); 
+        	//System.out.println(e.getMessage()); 
         }
 		return false; 
 	}
@@ -52,7 +52,7 @@ public class AlunoDAO  {
                 return true;
             }
 	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
+	        //System.out.println(e.getMessage());
 	    }
 	    return false;
 	}	
@@ -84,7 +84,7 @@ public class AlunoDAO  {
 	        rs.close();
             return aluno; 
         } catch (SQLException e) {
-           System.out.println(e.getMessage());
+           //System.out.println(e.getMessage());
         }	
     return aluno;
 	}

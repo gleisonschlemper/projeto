@@ -21,7 +21,7 @@ public class ViewAdministrador {
 			System.out.println("Opção 2 - Cadastrar aluno");
 			System.out.println("Opção 3 - Alterar endereço do aluno");   	                               
 	        System.out.println("Opção 4 - Alterar pais do aluno "); 
-	        System.out.println("Opção 5 - Cadastrar professor");
+	        System.out.println("Opção 5 - Visualizar alunos");
 	        System.out.println("Opção 6 - Sair");
 	        System.out.println("Digite uma opção:");
 	        int opcao = input.nextInt();
@@ -109,7 +109,7 @@ public class ViewAdministrador {
     	
         
 		switch (opcao) {
-	        case 1:
+	        case 1: // Mandar Mensagem
 	        	input.nextLine();
         		System.out.print("Assunto:");
         		String assunto = input.nextLine();
@@ -122,7 +122,7 @@ public class ViewAdministrador {
 	         	mensagem.addDestinatarios(matriculaBO.listarComAluno());
 	         	System.out.println(mensagemBO.addMensagemDestinatario(mensagem));
 	            break;
-	        case 2: // Cadastrar aluno novo no sistema
+	        case 2: // Cadastrar aluno
 	        	System.out.println("------------------------------");
 	        	System.out.println("     Informações do Aluno     ");
 	        	System.out.println("------------------------------");
@@ -153,15 +153,15 @@ public class ViewAdministrador {
 	            System.out.println("------------------------------");
 	            System.out.println("      Endereço do aluno       ");
 	            System.out.println("------------------------------");
-	            
+	            input.nextLine();
 	            System.out.println("Rua: ");
-	            ruaAluno = input.next();      
+	            ruaAluno = input.nextLine();      
 	            System.out.println("Bairro:");
-	            bairroAluno  = input.next();
+	            bairroAluno  = input.nextLine();
 	            System.out.println("CEP:");
-	            cepAluno = input.next(); 
+	            cepAluno = input.nextLine(); 
 	            System.out.println("Cidade:");
-	            cidadeAluno = input.next();
+	            cidadeAluno = input.nextLine();
 	            
 	            endereco = new Endereco(
 	            		ruaAluno,
@@ -248,7 +248,7 @@ public class ViewAdministrador {
 	        	Matricula matricula = new Matricula(new java.sql.Date(data.getTime()),new java.sql.Time(data.getTime()),  aluno);
 	        	System.out.println(matriculaBO.cadastrar(matricula));
 	            break;
-	        case 3:  
+	        case 3:  // Alterar endereço do aluno
 	        	System.out.println("CPF do aluno: "); 
 	    		cpfAluno = input.next();
 
@@ -269,7 +269,7 @@ public class ViewAdministrador {
 	        	aluno.setPais(new Pais(new Mae(), new Pai()));
 	        	System.out.println(alunoBO.alterarEndereco(aluno));
 	            break;
-	        case 4:   
+	        case 4:  // Alterar pais do aluno
 	        	
 	        	System.out.println("CPF do aluno: "); 
 	    		cpfAluno = input.next();
@@ -331,7 +331,21 @@ public class ViewAdministrador {
 	        	aluno.setPais(pais);
 	        	aluno.setEndereco(new Endereco());
 	        	System.out.println(alunoBO.alterarPais(aluno));   
-	        	break;
+	        	break;        	
+	        case 5: // Visualizar alunos
+	        	System.out.println("Alunos cadastrado:");
+	        	for(Matricula alunoMatriculado : matriculaBO.listarComAluno()){
+	        		System.out.println("Matricula: "+alunoMatriculado.getCodigo());
+	        		System.out.println("Nome: "+alunoMatriculado.getAluno().getNome());
+	        		System.out.println("Sobrenome: "+alunoMatriculado.getAluno().getSobrenome());
+	        		System.out.println("Idade: "+alunoMatriculado.getAluno().getIdade());
+	        		System.out.println("Telefone: "+alunoMatriculado.getAluno().getEmail());
+	        		System.out.println("----------------------------------------------------");
+	        	}
+	        break;
+	        case 6: // Cadastrar professor
+	        	// FAZER
+	        break;
 	        default:
 	            break;
 		}	

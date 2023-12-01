@@ -20,11 +20,11 @@ public class Main {
     	boolean sistema = true; 	
         while (sistema) {   
 	        System.out.println("##--  Sistema de notificacoes e avisos Escolar --##\n");
-	        System.out.println("Faca seu Login!                                   \n");
-	        System.out.println("Opção 1 - Administrador	                            ");
-	        System.out.println("Opção 2 - Professor	                                ");
-	        System.out.println("Opção 3 - Pais e alunos                           	");
-	        System.out.println("Opção 4 - Sair                                    \n");
+	        System.out.println("Faca seu Login!                                    \n");
+	        System.out.println("Opção 1 - Administrador	                             ");
+	        System.out.println("Opção 2 - Professor	                                 ");
+	        System.out.println("Opção 3 - Pais e alunos                           	 ");
+	        System.out.println("Opção 4 - Sair                                     \n");
 	        System.out.println("Digite uma opcao: ");
 	        int opcao = input.nextInt();
 	        
@@ -46,7 +46,7 @@ public class Main {
 		            else
 		            	System.out.println("E-mail ou senha inválido");
 		            break;
-		        case 2: // FAZER Login do Professor
+		        case 2: // Login do Professor
 		        	ProfessorBO professorBO = new ProfessorBO();
 		        	
 		        	 System.out.println("Email: ");
@@ -60,7 +60,7 @@ public class Main {
 			        	else 
 			        		System.out.println("E-mail ou senha inválido");
 		            break;
-		        case 3: // FAZER Login Pais e Alunos
+		        case 3: // Login Pais e Alunos
 		        	AlunoBO alunoBO = new AlunoBO();
 		        	
 		        	System.out.println("Email: ");

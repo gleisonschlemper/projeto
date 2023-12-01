@@ -21,9 +21,14 @@ public class ProfessorDAO {
 	        stmt.setInt(3, professor.getCodigo());
 	        stmt.setString(4, professor.getCpf());
 	        ResultSet rs = stmt.executeQuery();
-	        if (rs.next()) return true;
+	        if (rs.next()) {
+		    	stmt.close();
+		    	rs.close();
+	            conn.close();
+	            return true;
+	        }
 	    } catch (SQLException e) {
-	    	e.printStackTrace();
+	    	//e.printStackTrace();
 	    } 
 		
 		return false;
@@ -53,9 +58,8 @@ public class ProfessorDAO {
 	        	professor.setSenha(rs.getString("func_senha"));
 	        };
 	    } catch (SQLException e) {
-	    	e.printStackTrace();
+	    	//e.printStackTrace();
 	    } 
-		
 		return professor;
 	}
 	

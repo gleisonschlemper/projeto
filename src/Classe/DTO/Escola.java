@@ -21,8 +21,6 @@ public class Escola {
 		this.email = email;
 	}
 	
-	
-	
 	public int getCodigo() {
 		return codigo;
 	}

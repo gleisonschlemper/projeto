@@ -83,7 +83,6 @@ public class GerarHTML {
 			    Administrador administrador = AdministradorDAO.visualizar( // Crio um objeto Professor visualizando suas informações
 						new Administrador(mensagemAdministrador.getRemetente().getCodigo()) // O objeto somente com o código do remetente da mensagem
 					);
-			    
 	            gravarArq.println("<tr>");	    
 		        gravarArq.printf("<td>%s</td>\n", mensagemAdministrador.getAssunto());
 		        gravarArq.printf("<td>%s</td>\n", mensagemAdministrador.getConteudo());

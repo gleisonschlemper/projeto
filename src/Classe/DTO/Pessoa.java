@@ -83,7 +83,12 @@ public class Pessoa {
 	}
 
 	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+		if(codigo <= 0) {
+			this.codigo = 0;
+		}
+		else {
+			this.codigo = codigo;
+		}
 	}
 
 	public String getCpf() {

@@ -20,6 +20,7 @@ public class EscolaDAO {
 	         stmt.setInt(1, escola.getCodigo());
 		     ResultSet rs = stmt.executeQuery(); // Executa o select
 	         if (rs.next()) { // Excuta quantos objetos foram encontrado
+	        	escola.setNome(rs.getString("esc_nome"));
 	        	escola.setRua(rs.getString("esc_rua")); 
 	        	escola.setBairro(rs.getString("esc_bairro"));
 	        	escola.setCidade(rs.getString("esc_cidade"));

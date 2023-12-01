@@ -69,8 +69,6 @@ public class MensagemDAO {
 
 	    return false;
 	}
-
-
 	
 	public static Mensagem visualizarMensagemRemetente(Mensagem mensagem) throws SQLException {
 		try {
@@ -113,12 +111,14 @@ public class MensagemDAO {
 
         Session mSession = Session.getDefaultInstance(properties);
         
-        String conteudo = "Ola meus queridos(as), <br>"
-        				+ mensagem.getConteudo()+"<br> <br> <br>"
-        				+ mensagem.getRemetente().getCargo()+": "+mensagem.getRemetente().getNome()+" "+mensagem.getRemetente().getSobrenome()+"<br>"
-        				+ "E-mail: "+mensagem.getRemetente().getEmail()+"<br>"
-        				+ "whatsapp: "+mensagem.getRemetente().getTelefone()+"<br>"
-        				+ "<a href='https://www.escol.as/235263-eeb-paulo-cordeiro'> Acesse nossa pagina </a>";
+        String conteudo = "Prezados Pais e Alunos, <br>"
+        				+ "Informamos que "+ mensagem.getConteudo()+"<br> <br>"
+        				+ "Atenciosamente, <br>"
+                  		+ "Escola: EEB Paulo Cordeiro, <br>"
+        				+ mensagem.getRemetente().getCargo()+": "+mensagem.getRemetente().getNome()+" "+mensagem.getRemetente().getSobrenome()+", <br>"
+        				+ "E-mail: "+mensagem.getRemetente().getEmail()+", <br>"
+        				+ "whatsapp: "+mensagem.getRemetente().getTelefone()+", <br>"
+        				+ "Mais informações <a href='https://www.escol.as/235263-eeb-paulo-cordeiro'> Acesse nossa pagina </a>";
         try {
         	for(Matricula matricula : mensagem.getDestinatarios()) {
         		MimeMessage mCorreo = new MimeMessage(mSession);

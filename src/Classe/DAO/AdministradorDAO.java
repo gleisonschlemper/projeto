@@ -21,9 +21,14 @@ public class AdministradorDAO {
 	        stmt.setInt(3, administrador.getCodigo());
 	        stmt.setString(4, administrador.getCpf());
 	        ResultSet rs = stmt.executeQuery();
-	        if (rs.next()) return true;
+	        if (rs.next()) {
+		    	stmt.close();
+		    	rs.close();
+	            conn.close();
+	            return true;
+	        }
 	    } catch (SQLException e) {
-	    	e.printStackTrace();
+	    	//e.printStackTrace();
 	    } 
 	    return false;
 	}
@@ -55,7 +60,7 @@ public class AdministradorDAO {
 	        stmt.close();
 	        rs.close();
 	    } catch (SQLException e) {
-	    	e.printStackTrace();
+	    	//e.printStackTrace();
 	    }
 	    return administrador;
 	}

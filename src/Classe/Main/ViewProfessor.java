@@ -5,13 +5,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import Classe.BO.MensagemBO;
-import Classe.DAO.MatriculaDAO;
-import Classe.DTO.Aluno;
-import Classe.DTO.Matricula;
-import Classe.DTO.Mensagem;
-import Classe.DTO.Professor;
+import Classe.BO.*;
+import Classe.DTO.*;
 
 public class ViewProfessor {
 	private static Scanner input;
@@ -24,7 +19,8 @@ public class ViewProfessor {
 			System.out.println("##-- 	      Bem vindos(a)        --##");
 			System.out.println("Opcão 1 - Mandar mensagem              ");
 			System.out.println("Opcão 2 - Consultar aluno              ");
-	        System.out.println("Opção 3 - Sair");
+			System.out.println("Opcão 3 - Visualizar alunos            ");
+	        System.out.println("Opção 4 - Sair");
 	        System.out.println("Digite uma opção:");
 	        int opcao = input.nextInt();
 			
@@ -35,7 +31,10 @@ public class ViewProfessor {
 		        case 2: // Modificações relacionado aos professores
 		        	ativarFuncionalidade(opcao,professor);
 		            break;
-		        case 3:
+		        case 3: // Modificações relacionado aos professores
+		        	ativarFuncionalidade(opcao,professor);
+		            break;
+		        case 4:
 		        	ativo = false;
 		        }  
 			}
@@ -44,7 +43,7 @@ public class ViewProfessor {
 	private static void ativarFuncionalidade(int opcao, Professor professor) throws SQLException {
 		input = new Scanner (System.in);	
 	
-		MatriculaDAO matriculaBO = new MatriculaDAO();
+		MatriculaBO matriculaBO = new MatriculaBO();
 		MensagemBO mensagemBO = new MensagemBO();
 		List <Matricula> destinatario = new ArrayList <Matricula>();
 		Matricula matricula;
@@ -55,14 +54,14 @@ public class ViewProfessor {
 	        	System.out.println("Matricula do aluno:");
 	        	codigo = input.nextInt();
         		matricula = new Matricula(codigo,new Aluno());
-	        	if(matriculaBO.verificar(matricula)) {
+	        	if(matriculaBO.existe(matricula)) {
 	        		input.nextLine();
 	        		System.out.print("Assunto:");
 	        		String assunto = input.nextLine();
 	        		System.out.println("----------------------------");
 	        		System.out.print("Conteudo:");
 	        		String conteudo = input.nextLine();
-		        	destinatario.add(matriculaBO.visulizarAlunoCompletoPorMatricula(matricula)); // visualiza o aluno completo pela matricula e adicona na lista de matriculas
+		        	destinatario.add(matriculaBO.visualizarAlunoCompletoPorMatricula(matricula)); // visualiza o aluno completo pela matricula e adicona na lista de matriculas
 		        	Mensagem mensagem = new Mensagem(assunto, conteudo);
 		        	mensagem.addRemetente(professor);
 		         	mensagem.addDestinatarios(destinatario);
@@ -76,8 +75,8 @@ public class ViewProfessor {
 	        	System.out.println("Matricula do aluno:");
 	        	codigo = input.nextInt();
         		matricula = new Matricula(codigo,new Aluno());
-	        	if(matriculaBO.verificar(matricula)) {
-	        		matricula = matriculaBO.visulizarAlunoCompletoPorMatricula(matricula); // visualiza o aluno completo pela matricula 
+	        	if(matriculaBO.existe(matricula)) {
+	        		matricula = matriculaBO.visualizarAlunoCompletoPorMatricula(matricula); // visualiza o aluno completo pela matricula 
 	        		System.out.println("Informação do aluno!");
 	        		System.out.println("Nome: "+matricula.getAluno().getNome());
 	        		System.out.println("Sobrenome: "+matricula.getAluno().getSobrenome());
@@ -89,6 +88,17 @@ public class ViewProfessor {
 	        	else {
 	        		System.out.println("Matricula inválido!");
 	        	} 
+	         break;
+	        case 3: // 
+	        	System.out.println("Alunos cadastrado:");
+	        	for(Matricula alunoMatriculado : matriculaBO.listarComAluno()){
+	        		System.out.println("Matricula: "+alunoMatriculado.getCodigo());
+	        		System.out.println("Nome: "+alunoMatriculado.getAluno().getNome());
+	        		System.out.println("Sobrenome: "+alunoMatriculado.getAluno().getSobrenome());
+	        		System.out.println("Idade: "+alunoMatriculado.getAluno().getIdade());
+	        		System.out.println("Telefone: "+alunoMatriculado.getAluno().getEmail());
+	        		System.out.println("----------------------------------------------------");
+	        	}
 	         break;
         }  
 	}
